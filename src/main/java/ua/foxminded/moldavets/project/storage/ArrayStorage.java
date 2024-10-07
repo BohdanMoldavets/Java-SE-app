@@ -4,13 +4,19 @@ import ua.foxminded.moldavets.project.model.Resume;
 
 public class ArrayStorage {
 
-    private Resume[] storage = new Resume[10000];
+    private static int STORAGE_SIZE = 10000;
+
+    private Resume[] storage = new Resume[STORAGE_SIZE];
     private int size = 0;
 
     public void save(Resume resume) {
         if(!(isResumeInStorage(resume))) {
-            storage[size] = resume;
-            size++;
+            if(size+1 < STORAGE_SIZE) {
+                storage[size] = resume;
+                size++;
+            } else {
+                System.out.println("Can't save "+ resume +" because the list is full");
+            }
         } else {
             System.out.println("Can't save resume " + resume + " because it is already in storage"); //throw exception
         }
@@ -18,7 +24,14 @@ public class ArrayStorage {
 
     public void update(Resume resume) {
         if(isResumeInStorage(resume)){
-            //TODO
+            for(int i = 0; i < size; i++) {
+                if(storage[i].equals(resume)) {
+                    storage[i] = resume;
+                    System.out.println(resume + " was updated");
+                }
+            }
+        } else {
+            System.out.println("Can't update " + resume + " because it is not in storage"); //throw exception
         }
     }
 
@@ -66,7 +79,7 @@ public class ArrayStorage {
             Resume[] resumes = new Resume[size];
             for(int i = 0; i < size; i++) {
                 resumes[i] = storage[i];
-                //System.out.println("get: " + resumes[i].toString());
+                System.out.println("get: " + resumes[i].toString());
             }
             return resumes;
         } else {

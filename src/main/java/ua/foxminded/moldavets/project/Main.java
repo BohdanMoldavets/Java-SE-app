@@ -25,10 +25,15 @@ public class Main {
 
         System.out.println("Get resume1: " + arrayStorage.get(resume1.getUuid()));
 
-        System.out.println(arrayStorage.getAll());
+        arrayStorage.getAll();
 
         arrayStorage.delete("uuid3");
 
-        System.out.println(arrayStorage.getAll());
+        arrayStorage.getAll();
+
+        resume2.setUuid("uuid4");
+        arrayStorage.update(resume2);
+
+        arrayStorage.getAll();
     }
 }
