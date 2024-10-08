@@ -5,7 +5,7 @@ import ua.foxminded.moldavets.project.storage.ArrayStorage;
 
 public class Main {
 
-    static ArrayStorage arrayStorage = new ArrayStorage();
+    static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume resume1 = new Resume();
@@ -17,23 +17,24 @@ public class Main {
         resume2.setUuid("uuid2");
         resume3.setUuid("uuid3");
 
-        arrayStorage.save(resume1);
-        arrayStorage.save(resume2);
-        arrayStorage.save(resume3);
+        ARRAY_STORAGE.save(resume1);
+        ARRAY_STORAGE.save(resume2);
+        ARRAY_STORAGE.save(resume3);
 
 
 
-        System.out.println("Get resume1: " + arrayStorage.get(resume1.getUuid()));
+        System.out.println("Get resume1: " + ARRAY_STORAGE.get(resume1.getUuid()));
 
-        arrayStorage.getAll();
+        ARRAY_STORAGE.getAll();
 
-        arrayStorage.delete("uuid3");
+        ARRAY_STORAGE.delete("uuid3");
 
-        arrayStorage.getAll();
+        ARRAY_STORAGE.getAll();
 
         resume2.setUuid("uuid4");
-        arrayStorage.update(resume2);
+        ARRAY_STORAGE.update(resume2);
 
-        arrayStorage.getAll();
+        ARRAY_STORAGE.getAll();
+
     }
 }

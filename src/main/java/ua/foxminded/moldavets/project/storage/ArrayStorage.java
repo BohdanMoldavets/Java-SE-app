@@ -2,16 +2,18 @@ package ua.foxminded.moldavets.project.storage;
 
 import ua.foxminded.moldavets.project.model.Resume;
 
-public class ArrayStorage {
+import java.util.Arrays;
 
-    private static int STORAGE_SIZE = 10000;
+public class ArrayStorage implements Storage {
 
-    private Resume[] storage = new Resume[STORAGE_SIZE];
+    private static final int STORAGE_LIMIT = 10000;
+
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void save(Resume resume) {
         if(!(isResumeInStorage(resume))) {
-            if(size+1 < STORAGE_SIZE) {
+            if(size+1 < STORAGE_LIMIT) {
                 storage[size] = resume;
                 size++;
             } else {
@@ -50,9 +52,7 @@ public class ArrayStorage {
     }
 
     public void clear() {
-        for(int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage,0, size, null);
         size = 0;
     }
 
@@ -76,12 +76,10 @@ public class ArrayStorage {
 
     public Resume[] getAll() {
         if(!(size <= 0)) {
-            Resume[] resumes = new Resume[size];
-            for(int i = 0; i < size; i++) {
-                resumes[i] = storage[i];
-                System.out.println("get: " + resumes[i].toString());
-            }
-            return resumes;
+//            for(int i = 0; i < size; i++) {                               <-
+//                System.out.println("get: " + storage[i].toString());      only for console
+//            }                                                             <-
+            return Arrays.copyOfRange(storage,0, size);
         } else {
             System.out.println("Storage is empty"); // throw new exception
             return null;
