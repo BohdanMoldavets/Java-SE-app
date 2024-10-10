@@ -2,7 +2,7 @@ package ua.foxminded.moldavets.project.model;
 
 import java.util.Objects;
 
-public class Resume {
+public class Resume implements Comparable<Resume>{
 
     private String uuid;
 
@@ -32,5 +32,10 @@ public class Resume {
     @Override
     public int hashCode() {
         return Objects.hashCode(uuid);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return uuid.compareTo(o.uuid);
     }
 }
