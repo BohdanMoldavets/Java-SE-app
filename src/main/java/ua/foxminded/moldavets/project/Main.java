@@ -16,6 +16,7 @@ public class Main {
         Resume resume3 = new Resume("uuid3");
         Resume resume4 = new Resume("uuid4");
         Resume resume5 = new Resume("uuid5");
+        Resume resume6 = new Resume("test");
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
@@ -26,6 +27,7 @@ public class Main {
         SORTED_ARRAY_STORAGE.save(resume3);
         SORTED_ARRAY_STORAGE.save(resume2);
         SORTED_ARRAY_STORAGE.save(resume5);
+//        SORTED_ARRAY_STORAGE.save(resume6);
 
 
         System.out.println("--------------Array Storage---------------");

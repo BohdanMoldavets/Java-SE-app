@@ -7,12 +7,16 @@ import java.util.Arrays;
 public class ArrayStorage extends AbstractArrayStorage {
 
     protected int getIndex (String uuid) {
-        for(int i = 0; i < size; i++) {
-            if(uuid.equals(storage[i].getUuid())) {
-                return i;
+        if(uuid != null) {
+            for(int i = 0; i < size; i++) {
+                if(uuid.equals(storage[i].getUuid())) {
+                    return i;
+                }
             }
+            return -1;
+        } else {
+            throw new NullPointerException("Uuid cannot be null");
         }
-        return -1;
     }
 
     @Override

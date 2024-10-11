@@ -10,8 +10,12 @@ public class SortedArrayStorage extends AbstractArrayStorage{
 
     @Override
     protected int getIndex(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(sortedStorage,0, size, searchKey);
+        if(uuid != null) {
+            Resume searchKey = new Resume(uuid);
+            return Arrays.binarySearch(sortedStorage,0, size, searchKey);
+        } else {
+            throw new NullPointerException("Uuid cannot be null");
+        }
     }
 
     @Override
