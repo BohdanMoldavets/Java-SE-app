@@ -1,5 +1,8 @@
 package ua.foxminded.moldavets.project.storage;
 
+import ua.foxminded.moldavets.project.exception.ExistStorageException;
+import ua.foxminded.moldavets.project.exception.NotExistStorageException;
+import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
@@ -18,17 +21,17 @@ abstract class AbstractArrayStorage implements Storage {
                 subSaveToStorage(resume,size);
                 size++;
             } else {
-                System.out.println("Can't save "+ resume +" because the list is full");
+                throw new StorageException("Cannot save "+ resume.getUuid() +" because the list is full", resume.getUuid());
             }
         } else {
-            System.out.println("Can't save resume " + resume + " because it is already in storage"); //throw exception
+            throw new ExistStorageException(resume.getUuid());
         }
     }
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if( index == -1) {
-            System.out.println("Can't update " + resume + " because it is not in storage"); //throw exception
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             subSaveToStorage(resume,index);
             System.out.println(resume + " was updated");
@@ -38,7 +41,7 @@ abstract class AbstractArrayStorage implements Storage {
     public void delete (String uuid) {
         int index = getIndex(uuid);
         if( index == -1 ) {
-            System.out.println("Can't delete resume " + uuid + " because it is not in storage"); //throw exception
+            throw new NotExistStorageException(uuid);
         } else {
             subDeleteFromStorage(index);
         }
@@ -56,8 +59,7 @@ abstract class AbstractArrayStorage implements Storage {
             }
             return Arrays.copyOfRange(subStorage(),0, size);
         } else {
-            System.out.println("Storage is empty"); // throw new exception
-            return null;
+            throw new StorageException("Storage is empty", null);
         }
     }
 
@@ -67,8 +69,7 @@ abstract class AbstractArrayStorage implements Storage {
         if( index >= 0 ) {
             return subElementAtIndex(index);
         } else {
-            System.out.println("Can't get resume " + uuid + " because it is not in storage"); // throw exception
-            return null;
+            throw new NotExistStorageException(uuid);
         }
 
     }
