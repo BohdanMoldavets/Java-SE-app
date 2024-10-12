@@ -34,26 +34,38 @@ abstract class AbstractArrayStorage implements Storage {
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if( index == -1) {
-            throw new NotExistStorageException(resume.getUuid());
+        if(!resume.getUuid().trim().isEmpty()) {
+            if( index == -1) {
+                throw new NotExistStorageException(resume.getUuid());
+            } else {
+                subSaveToStorage(resume,index);
+                System.out.println(resume + " was updated");
+            }
         } else {
-            subSaveToStorage(resume,index);
-            System.out.println(resume + " was updated");
+            throw new StorageException("Uuid cannot be empty", null);
         }
     }
 
     public void delete (String uuid) {
         int index = getIndex(uuid);
-        if( index == -1 ) {
-            throw new NotExistStorageException(uuid);
+        if(!uuid.trim().isEmpty()) {
+            if( index == -1 ) {
+                throw new NotExistStorageException(uuid);
+            } else {
+                subDeleteFromStorage(index);
+            }
         } else {
-            subDeleteFromStorage(index);
+            throw new StorageException("Uuid cannot be empty", null);
         }
     }
 
     public void clear() {
-        Arrays.fill(subStorage(),0, size, null);
-        size = 0;
+        if(!(size <= 0)) {
+            Arrays.fill(subStorage(),0, size, null);
+            size = 0;
+        } else {
+            throw new StorageException("Cannot clear storage, because storage is empty", null);
+        }
     }
 
     public Resume[] getAll() {
@@ -70,12 +82,19 @@ abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if( index >= 0 ) {
-            return subElementAtIndex(index);
+        if(!uuid.trim().isEmpty()) {
+            if( index >= 0 ) {
+                return subElementAtIndex(index);
+            } else {
+                throw new NotExistStorageException(uuid);
+            }
         } else {
-            throw new NotExistStorageException(uuid);
+            throw new StorageException("Uuid cannot be empty", null);
         }
+    }
 
+    public int getStorageLimit() {
+        return STORAGE_LIMIT;
     }
 
     public int getSize() {
