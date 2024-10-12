@@ -18,8 +18,12 @@ abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if(index <= -1) {
             if(size + 1 < STORAGE_LIMIT) {
-                subSaveToStorage(resume,size);
-                size++;
+                if(!resume.getUuid().trim().isEmpty()) {
+                    subSaveToStorage(resume,size);
+                    size++;
+                } else {
+                    throw new StorageException("Uuid cannot be empty", null);
+                }
             } else {
                 throw new StorageException("Cannot save "+ resume.getUuid() +" because the list is full", resume.getUuid());
             }
@@ -74,6 +78,9 @@ abstract class AbstractArrayStorage implements Storage {
 
     }
 
+    public int getSize() {
+        return size;
+    }
 
     protected abstract int getIndex(String uuid);
     protected abstract void subSaveToStorage(Resume resume, int index);
