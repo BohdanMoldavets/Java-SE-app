@@ -1,14 +1,17 @@
 package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.Resume;
-import ua.foxminded.moldavets.project.storage.ArrayStorage;
-import ua.foxminded.moldavets.project.storage.SortedArrayStorage;
-import ua.foxminded.moldavets.project.storage.Storage;
+import ua.foxminded.moldavets.project.storage.*;
+
+import java.util.List;
+import java.util.UUID;
 
 public class Main {
 
     static Storage ARRAY_STORAGE = new ArrayStorage();
     static Storage SORTED_ARRAY_STORAGE = new SortedArrayStorage();
+    static Storage LIST_STORAGE = new ListStorage();
+    static Storage MAP_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
         Resume resume1 = new Resume("uuid1");
@@ -16,7 +19,7 @@ public class Main {
         Resume resume3 = new Resume("uuid3");
         Resume resume4 = new Resume("uuid4");
         Resume resume5 = new Resume("uuid5");
-        Resume resume6 = new Resume("");
+        Resume resume6 = new Resume("uuid6");
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
@@ -29,14 +32,40 @@ public class Main {
         SORTED_ARRAY_STORAGE.save(resume5);
         SORTED_ARRAY_STORAGE.save(resume6);
 
+        LIST_STORAGE.save(resume1);
+        LIST_STORAGE.save(resume2);
+        LIST_STORAGE.save(resume3);
 
-        System.out.println("--------------Array Storage---------------");
-        System.out.println("Get resume1: " + ARRAY_STORAGE.get(resume2.getUuid()));
-        System.out.println(ARRAY_STORAGE.getAll());
+        MAP_STORAGE.save(resume1);
+        MAP_STORAGE.save(resume2);
+        MAP_STORAGE.save(resume3);
 
-        System.out.println("--------------Sorted Array Storage---------------");
-        System.out.println("Get resume1: " + SORTED_ARRAY_STORAGE.get(resume1.getUuid()));
-        SORTED_ARRAY_STORAGE.delete(resume2.getUuid());
-        System.out.println(SORTED_ARRAY_STORAGE.getAll());
+
+//        System.out.println("--------------Array Storage---------------");
+//        System.out.println("Get resume1: " + ARRAY_STORAGE.get(resume2.getUuid()));
+//        System.out.println(ARRAY_STORAGE.getAll());
+//
+//        System.out.println("--------------Sorted Array Storage---------------");
+//        System.out.println("Get resume1: " + SORTED_ARRAY_STORAGE.get(resume1.getUuid()));
+//        SORTED_ARRAY_STORAGE.delete(resume2.getUuid());
+//        System.out.println(SORTED_ARRAY_STORAGE.getAll());
+
+        System.out.println("--------------List Storage---------------");
+
+        Resume[] list = LIST_STORAGE.getAll();
+        LIST_STORAGE.delete("uuid1");
+        for (Resume resume : list) {
+            System.out.println(resume);
+        }
+        System.out.println(LIST_STORAGE.get("uuid1"));
+
+//        System.out.println("--------------Map Storage---------------");
+//        Resume[] map = MAP_STORAGE.getAll();
+//
+//
+//        MAP_STORAGE.update(resume1);
+//        for (Resume resume : map) {
+//            System.out.println(resume);
+//        }
     }
 }

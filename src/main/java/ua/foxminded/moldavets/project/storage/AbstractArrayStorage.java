@@ -7,11 +7,10 @@ import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
 
-abstract class AbstractArrayStorage implements Storage {
+abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     public void save(Resume resume) {
@@ -32,46 +31,10 @@ abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if(!resume.getUuid().trim().isEmpty()) {
-            if( index == -1) {
-                throw new NotExistStorageException(resume.getUuid());
-            } else {
-                subSaveToStorage(resume,index);
-                System.out.println(resume + " was updated");
-            }
-        } else {
-            throw new StorageException("Uuid cannot be empty", null);
-        }
-    }
-
-    public void delete (String uuid) {
-        int index = getIndex(uuid);
-        if(!uuid.trim().isEmpty()) {
-            if( index == -1 ) {
-                throw new NotExistStorageException(uuid);
-            } else {
-                subDeleteFromStorage(index);
-            }
-        } else {
-            throw new StorageException("Uuid cannot be empty", null);
-        }
-    }
-
-    public void clear() {
-        if(!(size <= 0)) {
-            Arrays.fill(subStorage(),0, size, null);
-            size = 0;
-        } else {
-            throw new StorageException("Cannot clear storage, because storage is empty", null);
-        }
-    }
-
     public Resume[] getAll() {
         if(!(size <= 0)) {
             for(int i = 0; i < size; i++) {
-                System.out.println("get: " + subElementAtIndex(i).toString() + " getAll()");
+                System.out.println("get: " + subGetElement(i, null).toString() + " getAll()");
             }
             return Arrays.copyOfRange(subStorage(),0, size);
         } else {
@@ -80,30 +43,8 @@ abstract class AbstractArrayStorage implements Storage {
     }
 
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if(!uuid.trim().isEmpty()) {
-            if( index >= 0 ) {
-                return subElementAtIndex(index);
-            } else {
-                throw new NotExistStorageException(uuid);
-            }
-        } else {
-            throw new StorageException("Uuid cannot be empty", null);
-        }
-    }
-
     public int getStorageLimit() {
         return STORAGE_LIMIT;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    protected abstract int getIndex(String uuid);
-    protected abstract void subSaveToStorage(Resume resume, int index);
-    protected abstract void subDeleteFromStorage(int index);
-    protected abstract Resume subElementAtIndex(int index);
-    protected abstract Resume[] subStorage();
 }

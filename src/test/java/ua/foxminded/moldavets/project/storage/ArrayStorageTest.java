@@ -9,7 +9,7 @@ import ua.foxminded.moldavets.project.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AbstractArrayStorageTest {
+class ArrayStorageTest {
     private final Storage storage = new ArrayStorage();
     private static final String UUID_1 = "UUID1";
     private static final String UUID_2 = "UUID2";
@@ -86,9 +86,10 @@ class AbstractArrayStorageTest {
 
     @Test
     void update_shouldReturnException_whenInputUuidOfResumeContainsEmptyString() {
-        Exception actual = assertThrows(StorageException.class,
-                () -> storage.update(new Resume("")));
-        assertEquals("Uuid cannot be empty", actual.getMessage());
+        Resume resume = new Resume("");
+        Exception actual = assertThrows(NotExistStorageException.class,
+                () -> storage.update(resume));
+        assertEquals("Resume " + resume.getUuid() + " does not exist", actual.getMessage());
     }
 
     @Test

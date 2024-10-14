@@ -1,5 +1,6 @@
 package ua.foxminded.moldavets.project.storage;
 
+import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
@@ -19,13 +20,19 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
+    protected int subGetSize() {
+        return size;
+    }
+
+
+    @Override
     protected void subSaveToStorage(Resume resume,int index) {
         sortedStorage[index] = resume;
         sortArray();
     }
 
     @Override
-    protected void subDeleteFromStorage(int index) {
+    protected void subDeleteFromStorage(int index, String uuid) {
             sortedStorage[index] = sortedStorage[size - 1];
             sortedStorage[size - 1] = null;
             size--;
@@ -33,7 +40,17 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    protected Resume subElementAtIndex(int index) {
+    protected void subClearStorage() {
+        if(!(size <= 0)) {
+            Arrays.fill(sortedStorage,0, size, null);
+            size = 0;
+        } else {
+            throw new StorageException("Cannot clear storage, because storage is empty", null);
+        }
+    }
+
+    @Override
+    protected Resume subGetElement(int index, String uuid) {
         return sortedStorage[index];
     }
 
@@ -41,7 +58,6 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     protected Resume[] subStorage() {
         return sortedStorage;
     }
-
 
     private void sortArray() {
         sortedStorage = selectionSort(sortedStorage,size);
