@@ -26,8 +26,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void subSaveToStorage(Resume resume, int index) {
-        mapStorage.remove(resume);
-        mapStorage.put(resume, resume.getUuid());
+        if(mapStorage.size()+1 < storage_limit) {
+            mapStorage.remove(resume);
+            mapStorage.put(resume, resume.getUuid());
+        } else {
+            throw new StorageException("Cannot save " + resume.getUuid() + " because the list is full", null);
+        }
     }
 
     @Override
@@ -36,8 +40,23 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    protected int subGetStorageLimit() {
+        return storage_limit;
+    }
+
+
+    @Override
     protected void subClearStorage() {
-        mapStorage.clear();
+        if(!(mapStorage.isEmpty())) {
+            mapStorage.clear();
+        } else {
+            throw new StorageException("Cannot clear storage, because storage is empty", null);
+        }
+    }
+
+    @Override
+    protected void subSetStorageLimit(int storageLimit) {
+        storage_limit = storageLimit;
     }
 
     @Override

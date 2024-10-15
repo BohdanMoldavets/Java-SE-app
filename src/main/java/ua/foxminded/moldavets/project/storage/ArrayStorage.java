@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected Resume[] storage = new Resume[storage_limit];
 
     protected int getIndex (String uuid) {
         if(uuid != null) {
@@ -41,6 +41,11 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
+    protected int subGetStorageLimit() {
+        return storage_limit;
+    }
+
+    @Override
     protected void subClearStorage() {
         if(!(size <= 0)) {
             Arrays.fill(storage,0, size, null);
@@ -51,6 +56,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
+    protected void subSetStorageLimit(int storageLimit) {
+        storage_limit = storageLimit;
+    }
+
+
+    @Override
     protected Resume subGetElement(int index, String uuid) {
         return storage[index];
     }
@@ -59,4 +70,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected Resume[] subStorage() {
         return storage;
     }
+
+
 }

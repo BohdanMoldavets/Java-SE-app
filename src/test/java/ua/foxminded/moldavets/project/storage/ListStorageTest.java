@@ -9,8 +9,9 @@ import ua.foxminded.moldavets.project.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayStorageTest {
-    private final Storage storage = new ArrayStorage();
+class ListStorageTest {
+
+    private final Storage storage = new ListStorage();
     private static final String UUID_1 = "UUID1";
     private static final String UUID_2 = "UUID2";
     private static final String UUID_3 = "UUID3";
@@ -63,7 +64,7 @@ class ArrayStorageTest {
                 () -> storage.save(new Resume(UUID_1)));
         assertEquals("Resume " + UUID_1 + " already exist", actual.getMessage());
     }
-    
+
     @Test
     void save_shouldSaveResumeButIfYouTryDoItAgainShouldThrowException_whenInputContainsCorrectResume() {
         storage.save(new Resume(UUID_4));
@@ -75,7 +76,7 @@ class ArrayStorageTest {
     @Test
     void update_shouldReturnException_whenInputResumeDoesNotExist() {
         Exception actual = assertThrows(NotExistStorageException.class,
-        () -> storage.update(new Resume(UUID_4)));
+                () -> storage.update(new Resume(UUID_4)));
         assertEquals("Resume " + UUID_4 + " does not exist", actual.getMessage());
     }
 

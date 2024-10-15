@@ -11,6 +11,7 @@ public interface Storage {
     void update(Resume resume);
     void delete(String uuid);
     void clear();
+    void setStorageLimit(int storageLimit);
 
     int getStorageLimit();
     int getSize();

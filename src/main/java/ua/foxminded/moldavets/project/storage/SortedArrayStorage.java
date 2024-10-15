@@ -5,9 +5,9 @@ import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage {
 
-    private Resume[] sortedStorage = new Resume[STORAGE_LIMIT];
+    private Resume[] sortedStorage = new Resume[storage_limit];
 
     @Override
     protected int getIndex(String uuid) {
@@ -40,6 +40,11 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
+    protected int subGetStorageLimit() {
+        return storage_limit;
+    }
+
+    @Override
     protected void subClearStorage() {
         if(!(size <= 0)) {
             Arrays.fill(sortedStorage,0, size, null);
@@ -50,6 +55,12 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
+    protected void subSetStorageLimit(int storageLimit) {
+        storage_limit = storageLimit;
+    }
+
+
+    @Override
     protected Resume subGetElement(int index, String uuid) {
         return sortedStorage[index];
     }
@@ -58,6 +69,7 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     protected Resume[] subStorage() {
         return sortedStorage;
     }
+
 
     private void sortArray() {
         sortedStorage = selectionSort(sortedStorage,size);

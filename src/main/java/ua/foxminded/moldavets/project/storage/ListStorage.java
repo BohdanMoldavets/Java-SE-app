@@ -26,8 +26,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void subSaveToStorage(Resume resume, int index) {
-        listStorage.remove(resume);
-        listStorage.add(resume);
+        if(listStorage.size()+1 < storage_limit) {
+            listStorage.remove(resume);
+            listStorage.add(resume);
+        } else {
+            throw new StorageException("Cannot save " + resume.getUuid() + " because the list is full", null);
+        }
     }
 
     @Override
@@ -36,8 +40,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected int subGetStorageLimit() {
+        return storage_limit;
+    }
+
+    @Override
     protected void subClearStorage() {
-        listStorage.clear();
+        if (!listStorage.isEmpty()) {
+            listStorage.clear();
+        } else {
+            throw new StorageException("Cannot clear storage, because storage is empty", null);
+        }
+
+    }
+
+    @Override
+    protected void subSetStorageLimit(int storageLimit) {
+       storage_limit = storageLimit;
     }
 
 
