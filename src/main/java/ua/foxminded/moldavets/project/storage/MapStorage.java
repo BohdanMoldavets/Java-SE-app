@@ -12,8 +12,10 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected int getIndex(String uuid) {
-        if(mapStorage.containsKey(new Resume(uuid))) {
-            return 1;
+        for(Resume r : mapStorage.keySet()){
+            if(uuid.equals(r.getUuid())){
+                return 1;
+            }
         }
         return -1;
     }
@@ -36,7 +38,11 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void subDeleteFromStorage(int index, String uuid) {
-        mapStorage.remove(new Resume(uuid));
+        for(Resume r : mapStorage.keySet()){
+            if(uuid.equals(r.getUuid())){
+                mapStorage.remove(r);
+            }
+        }
     }
 
     @Override
@@ -61,7 +67,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Resume subGetElement(int index, String uuid) {
-        return new Resume(mapStorage.get(new Resume(uuid)));
+        for(Resume r : mapStorage.keySet()) {
+            if(uuid.equals(r.getUuid())) {
+                return r;
+            }
+        }
+        return null;
     }
 
     @Override

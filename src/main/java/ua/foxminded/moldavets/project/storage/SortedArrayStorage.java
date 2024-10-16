@@ -4,16 +4,19 @@ import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     private Resume[] sortedStorage = new Resume[storage_limit];
 
+    private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) -> o1.getUuid().compareTo(o2.getUuid()));
+
     @Override
     protected int getIndex(String uuid) {
         if(uuid != null) {
-            Resume searchKey = new Resume(uuid);
-            return Arrays.binarySearch(sortedStorage,0, size, searchKey);
+            Resume searchKey = new Resume(uuid, "null");
+            return Arrays.binarySearch(sortedStorage,0, size, searchKey, RESUME_COMPARATOR);
         } else {
             throw new NullPointerException("Uuid cannot be null");
         }
@@ -74,16 +77,19 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     private void sortArray() {
         sortedStorage = selectionSort(sortedStorage,size);
     }
+
     // I can use Arrays.sort() here, but the assignment says not to use it lol
     private Resume[] selectionSort(Resume[] array, int size) {
-        for(int i = 0; i < size; i++) {
-            for(int j = 0; j < size-1; j++) {
-                if(array[j].compareTo(array[j+1]) > 0) {
-                    Resume temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
+        for(int i = 0; i < size - 1; i++) {
+            int minIndex = i;
+            for(int j = i + 1; j < size; j++) {
+                if(RESUME_COMPARATOR.compare(array[j], array[minIndex]) < 0) {
+                    minIndex = j;
                 }
             }
+            Resume temp = array[i];
+            array[i] = array[minIndex];
+            array[minIndex] = temp;
         }
         return array;
     }

@@ -30,9 +30,6 @@ abstract class AbstractArrayStorage extends AbstractStorage {
 
     public Resume[] getAll() {
         if(!(size <= 0)) {
-//            for(int i = 0; i < size; i++) {
-//                System.out.println("get: " + subGetElement(i, null).toString() + " getAll()");
-//            }
             return Arrays.copyOfRange(subStorage(),0, size);
         } else {
             throw new StorageException("Storage is empty", null);

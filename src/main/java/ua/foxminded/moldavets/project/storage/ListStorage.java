@@ -12,8 +12,10 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int getIndex(String uuid) {
-        if(listStorage.contains(new Resume(uuid))) {
-            return listStorage.indexOf(new Resume(uuid));
+        for(Resume r : listStorage) {
+            if(r.getUuid().equals(uuid)) {
+                return listStorage.indexOf(r);
+            }
         }
         return -1;
     }
@@ -36,7 +38,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void subDeleteFromStorage(int index, String uuid) {
-        listStorage.remove(new Resume(uuid));
+        listStorage.remove(index);
     }
 
     @Override
