@@ -20,11 +20,12 @@ public class Main {
         Resume resume3 = new Resume("uuid3", "Olivia Bennett");
         Resume resume4 = new Resume("uuid4", "Jack Sullivan");
         Resume resume5 = new Resume("uuid5", "Sophia Carter");
-        Resume resume6 = new Resume("uuid6", "Emily Harris");
+        Resume resume6 = new Resume("uuid6", "Amply Harris");
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
         ARRAY_STORAGE.save(resume3);
+        ARRAY_STORAGE.save(resume6);
 
         SORTED_ARRAY_STORAGE.save(resume4);
         SORTED_ARRAY_STORAGE.save(resume1);
@@ -46,11 +47,15 @@ public class Main {
 //        System.out.println("Get resume1: " + ARRAY_STORAGE.get(resume2.getUuid()));
 //        System.out.println(ARRAY_STORAGE.getAll());
 //
-        System.out.println("--------------Sorted Array Storage---------------");
-        System.out.println("Get resume1: " + SORTED_ARRAY_STORAGE.get(resume1.getUuid()));
-        SORTED_ARRAY_STORAGE.delete(resume2.getUuid());
+//        System.out.println("--------------Sorted Array Storage---------------");
+//        System.out.println("Get resume1: " + SORTED_ARRAY_STORAGE.get(resume1.getUuid()));
+//        SORTED_ARRAY_STORAGE.delete(resume2.getUuid());
         //System.out.println(SORTED_ARRAY_STORAGE.getAll());
-        Arrays.stream(SORTED_ARRAY_STORAGE.getAll()).forEach(System.out::println);
+
+        for(Resume r : LIST_STORAGE.getAllSorted()) {
+            System.out.println(r);
+        }
+
 
 //        System.out.println("--------------List Storage---------------");
 //

@@ -5,7 +5,7 @@ import ua.foxminded.moldavets.project.exception.NotExistStorageException;
 import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
 abstract class AbstractStorage implements Storage {
 
@@ -44,8 +44,17 @@ abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return subStorage();
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = Arrays.stream(subStorage())
+                .filter(Objects::nonNull)
+                .filter(resume -> resume.getFullName() != null)
+                .sorted(Comparator.comparing(Resume::getFullName))
+                .toList();
+        if(!(resumes.isEmpty())) {
+            return resumes;
+        } else {
+            throw new StorageException("Storage is empty", null);
+        }
     }
 
     @Override

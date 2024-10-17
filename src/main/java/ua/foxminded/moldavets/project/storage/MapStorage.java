@@ -41,6 +41,7 @@ public class MapStorage extends AbstractStorage {
         for(Resume r : mapStorage.keySet()){
             if(uuid.equals(r.getUuid())){
                 mapStorage.remove(r);
+                break;
             }
         }
     }
