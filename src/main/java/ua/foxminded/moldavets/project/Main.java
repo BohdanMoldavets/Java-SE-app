@@ -1,6 +1,7 @@
 package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.Resume;
+import ua.foxminded.moldavets.project.model.SectionType;
 import ua.foxminded.moldavets.project.storage.*;
 
 import java.util.Arrays;
@@ -54,6 +55,10 @@ public class Main {
 
         for(Resume r : LIST_STORAGE.getAllSorted()) {
             System.out.println(r);
+        }
+
+        for (SectionType type : SectionType.values()) {
+            System.out.println(type.getTitle());
         }
 
 
