@@ -3,10 +3,12 @@ package ua.foxminded.moldavets.project;
 import ua.foxminded.moldavets.project.model.*;
 import ua.foxminded.moldavets.project.storage.*;
 
+import java.io.File;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class Main {
@@ -62,6 +64,17 @@ public class Main {
                         new Organization.Position(2008, Month.MAY, "position2", "content2"))
         ));
         r1.addContact(ContactType.EMAIL,"example@example.com");
+
+
+        File file = new File("..\\Java-SE-app\\src\\main\\resources");
+        List<File> list = new ArrayList<>();
+
+        for(File f : file.listFiles()){
+            if(f.isFile()){
+                list.add(f);
+                System.out.println(f.getName());
+            }
+        }
 
 
 //        for(Resume r : LIST_STORAGE.getAllSorted()) {
