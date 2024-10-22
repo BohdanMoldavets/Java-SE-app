@@ -1,10 +1,11 @@
 package ua.foxminded.moldavets.project.model;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Resume {
+public class Resume implements Serializable {
 
     private final String uuid;
     private final String fullName;

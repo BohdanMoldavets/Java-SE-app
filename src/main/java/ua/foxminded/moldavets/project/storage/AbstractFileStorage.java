@@ -37,14 +37,15 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
     }
 
     @Override
-    public void save(Resume resume, File file) {
+    public void save(Resume resume, File dir) {
         try {
-            file.createNewFile();
-            //subWrite(resume,file);
+            dir.createNewFile();
+            subWrite(resume, new BufferedOutputStream(new FileOutputStream(String.valueOf(directory+"\\"+resume.getFullName()))));
+            System.out.printf("File %s saved successful%n",resume.getFullName());
         } catch (IOException exception) {
-            throw new StorageException("Couldn't create file " + file.getAbsolutePath() , file.getName(), exception);
+            throw new StorageException("Couldn't create file " + dir.getAbsolutePath()+"\\"+resume.getFullName(),
+                    dir.getName(), exception);
         }
-        subUpdate(resume, file);
     }
 
     @Override
@@ -61,20 +62,14 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
         if(!file.delete()) {
             throw new StorageException("File delete exception", file.getName());
         }
+        System.out.printf("File %s deleted successful%n",file.getName());
     }
 
     @Override
     public void clear() {
-        File[] directoryArrayFiles = directory.listFiles();
-        if (directoryArrayFiles != null) {
-            Arrays.stream(directoryArrayFiles).forEach(this::subDelete);
+        if (directory.listFiles() != null) {
+            Arrays.asList(Objects.requireNonNull(directory.listFiles())).forEach(this::delete);
         }
-
-//        for(File file : directoryArrayFiles) {
-//
-//            subDelete(file);
-//        }
-
     }
 
     @Override
@@ -91,9 +86,7 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
         return files.length;
     }
 
-    protected abstract void subWrite(Resume resume, OutputStream file) throws IOException;
-    protected abstract Resume subRead(InputStream file) throws IOException;
-    protected abstract void subDelete(File file);
-    protected abstract void subUpdate(Resume resume, File file);
+    protected abstract void subWrite(Resume resume, OutputStream outputStream) throws IOException;
+    protected abstract Resume subRead(InputStream inputStream) throws IOException;
 
 }

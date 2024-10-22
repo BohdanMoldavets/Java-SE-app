@@ -47,35 +47,40 @@ public class Main {
         MAP_STORAGE.save(resume3);
 
 
-        Resume r1 = new Resume("uuid7", "Mike Jozef");
 
-        r1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        r1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-        r1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement1,Achievement2,Achievement3"));
-        r1.addSection(SectionType.QUALIFICATIONS, new ListSection("C,Java,SQL"));
-        r1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+        resume1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        resume1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
+        resume1.addSection(SectionType.QUALIFICATIONS, new ListSection("C,Java,SQL"));
+        resume1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement1,Achievement2,Achievement3"));
+        resume1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Organization", "https://google.com",
                         new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
                         new Organization.Position(2001, Month.MARCH, "position2", "content2")
                 )));
-        r1.addSection(SectionType.EDUCATION, new OrganizationSection(
+        resume1.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("Merito WSB", "https://merito.pl",
                         new Organization.Position(2007, Month.OCTOBER, "position1", "content1"),
                         new Organization.Position(2008, Month.MAY, "position2", "content2"))
         ));
-        r1.addContact(ContactType.EMAIL,"example@example.com");
+        resume1.addContact(ContactType.EMAIL,"example@example.com");
 
 
-        File file = new File("..\\Java-SE-app\\src\\main\\resources");
+        File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
         List<File> list = new ArrayList<>();
 
-        for(File f : file.listFiles()){
-            if(f.isFile()){
-                list.add(f);
-                System.out.println(f.getName());
-            }
-        }
+//        for(File f : file.listFiles()){
+//            if(f.isFile()){
+//                list.add(f);
+//                System.out.println(f.getName());
+//            }
+//        }
 
+
+        AbstractFileStorage ob = new ObjectStreamStorage(dir);
+        ob.save(resume1,dir);
+        File file = new File(dir+"\\"+resume1.getFullName());
+//        ob.delete(file);
+//        System.out.println(ob.get(file).getSection(SectionType.EXPERIENCE));
 
 //        for(Resume r : LIST_STORAGE.getAllSorted()) {
 //            System.out.println(r);

@@ -2,6 +2,7 @@ package ua.foxminded.moldavets.project.model;
 
 import ua.foxminded.moldavets.project.util.DataUtil;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import static ua.foxminded.moldavets.project.util.DataUtil.NOW;
 import static ua.foxminded.moldavets.project.util.DataUtil.of;
 
-public class Organization {
+public class Organization implements Serializable {
 
     private final Link homepage;
     private List<Position> positions = new ArrayList<>();
@@ -22,7 +23,7 @@ public class Organization {
         this.positions = Arrays.asList(positions);
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
 
         private final LocalDate startDate;
         private final LocalDate endDate;
