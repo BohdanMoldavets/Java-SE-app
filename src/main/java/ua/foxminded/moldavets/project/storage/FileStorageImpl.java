@@ -1,17 +1,21 @@
 package ua.foxminded.moldavets.project.storage;
 
+import ua.foxminded.moldavets.project.exception.NotExistStorageException;
 import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
+import ua.foxminded.moldavets.project.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage implements FileStorage<File> {
+public class FileStorageImpl implements FileStorage<File> {
 
     private final File directory;
+    private final StreamSerializer serializer;
 
-    public AbstractFileStorage(File directory) {
+    public FileStorageImpl(File directory, StreamSerializer serializer) {
+        this.serializer = serializer;
         Objects.requireNonNull(directory);
         if(!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " isn't a directory");
@@ -30,7 +34,7 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
     @Override
     public Resume get(File file) {
         try {
-            return isExist(file) ? subRead(new BufferedInputStream(new FileInputStream(file))) : null;
+            return isExist(file) ? serializer.subRead(new BufferedInputStream(new FileInputStream(file))) : null;
         } catch (IOException e) {
             throw new StorageException("File read exception", file.getName(), e);
         }
@@ -39,21 +43,25 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
     @Override
     public void save(Resume resume, File dir) {
         try {
-            dir.createNewFile();
-            subWrite(resume, new BufferedOutputStream(new FileOutputStream(String.valueOf(directory+"\\"+resume.getFullName()))));
-            System.out.printf("File %s saved successful%n",resume.getFullName());
+            //dir.createNewFile();
+            serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
+            System.out.printf("File %s saved successful%n",resume.getUuid());
         } catch (IOException exception) {
-            throw new StorageException("Couldn't create file " + dir.getAbsolutePath()+"\\"+resume.getFullName(),
+            throw new StorageException("Couldn't save resume " + dir.getAbsolutePath()+"\\"+resume.getUuid(),
                     dir.getName(), exception);
         }
     }
 
     @Override
     public void update(Resume resume, File file) {
-        try {
-            subWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
-        } catch (IOException e) {
-            throw new StorageException("IO exception", file.getName(), e);
+        if (isExist(file)) {
+            try {
+                serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
+            } catch (IOException e) {
+                throw new StorageException("IO exception", file.getName(), e);
+            }
+        } else {
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -62,7 +70,7 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
         if(!file.delete()) {
             throw new StorageException("File delete exception", file.getName());
         }
-        System.out.printf("File %s deleted successful%n",file.getName());
+        System.out.printf("File %s deleted successful",file.getName());
     }
 
     @Override
@@ -85,8 +93,4 @@ public abstract class AbstractFileStorage implements FileStorage<File> {
         }
         return files.length;
     }
-
-    protected abstract void subWrite(Resume resume, OutputStream outputStream) throws IOException;
-    protected abstract Resume subRead(InputStream inputStream) throws IOException;
-
 }

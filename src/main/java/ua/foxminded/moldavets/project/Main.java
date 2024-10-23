@@ -2,14 +2,10 @@ package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.*;
 import ua.foxminded.moldavets.project.storage.*;
+import ua.foxminded.moldavets.project.storage.serializer.ObjectStreamSerializer;
 
 import java.io.File;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 
 public class Main {
 
@@ -66,7 +62,8 @@ public class Main {
 
 
         File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
-        List<File> list = new ArrayList<>();
+        String dirStr = dir.getAbsolutePath();
+//        List<File> list = new ArrayList<>();
 
 //        for(File f : file.listFiles()){
 //            if(f.isFile()){
@@ -76,9 +73,13 @@ public class Main {
 //        }
 
 
-        AbstractFileStorage ob = new ObjectStreamStorage(dir);
-        ob.save(resume1,dir);
-        File file = new File(dir+"\\"+resume1.getFullName());
+//        ObjectStreamSerializer ob = new ObjectStreamSerializer(dir);
+//        ob.save(resume1,ob.getSearchKey(resume1.getUuid()));
+
+        FileStorage<File> fileStorage = new FileStorageImpl(dir, new ObjectStreamSerializer());
+        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
+
+
 //        ob.delete(file);
 //        System.out.println(ob.get(file).getSection(SectionType.EXPERIENCE));
 

@@ -1,18 +1,13 @@
-package ua.foxminded.moldavets.project.storage;
+package ua.foxminded.moldavets.project.storage.serializer;
 
 import ua.foxminded.moldavets.project.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-
-
-    public ObjectStreamStorage(File directory) {
-        super(directory);
-    }
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
-    protected void subWrite(Resume resume, OutputStream outputStream) throws IOException {
+    public void subWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(resume);
         } catch (Exception e) {
@@ -21,7 +16,7 @@ public class ObjectStreamStorage extends AbstractFileStorage {
     }
 
     @Override
-    protected Resume subRead(InputStream inputStream) throws IOException {
+    public Resume subRead(InputStream inputStream) throws IOException {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             return (Resume) objectInputStream.readObject();
         } catch (Exception e) {
