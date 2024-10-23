@@ -1,5 +1,6 @@
 package ua.foxminded.moldavets.project.storage;
 
+import ua.foxminded.moldavets.project.exception.ExistStorageException;
 import ua.foxminded.moldavets.project.exception.NotExistStorageException;
 import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
@@ -42,13 +43,19 @@ public class FileStorageImpl implements FileStorage<File> {
 
     @Override
     public void save(Resume resume, File dir) {
-        try {
-            //dir.createNewFile();
-            serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
-            System.out.printf("File %s saved successful%n",resume.getUuid());
-        } catch (IOException exception) {
-            throw new StorageException("Couldn't save resume " + dir.getAbsolutePath()+"\\"+resume.getUuid(),
-                    dir.getName(), exception);
+        if (resume != null && dir != null) {
+            if (!isExist(dir)) {
+                try {
+                    serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
+                } catch (IOException exception) {
+                    throw new StorageException("Couldn't save resume " + dir.getAbsolutePath()+"\\"+resume.getUuid(),
+                            dir.getName(), exception);
+                }
+            } else {
+                throw new ExistStorageException(resume.getUuid());
+            }
+        } else {
+            throw new NullPointerException("Resume or search key cannot be null");
         }
     }
 
@@ -70,7 +77,6 @@ public class FileStorageImpl implements FileStorage<File> {
         if(!file.delete()) {
             throw new StorageException("File delete exception", file.getName());
         }
-        System.out.printf("File %s deleted successful",file.getName());
     }
 
     @Override
@@ -93,4 +99,17 @@ public class FileStorageImpl implements FileStorage<File> {
         }
         return files.length;
     }
+
+    private boolean checkForInvalidData(Resume resume,File file) {
+        if(resume != null && file != null) {
+            if(!resume.getUuid().trim().isEmpty() && file.getAbsolutePath().trim().isEmpty()) {
+                return true;
+            } else {
+                throw new NullPointerException("Resume or Search Key cannot be empty");
+            }
+        } else {
+            throw new NullPointerException("Resume or Search Key cannot be null");
+        }
+    }
+
 }

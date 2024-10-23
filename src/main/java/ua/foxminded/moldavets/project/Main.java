@@ -76,8 +76,8 @@ public class Main {
 //        ObjectStreamSerializer ob = new ObjectStreamSerializer(dir);
 //        ob.save(resume1,ob.getSearchKey(resume1.getUuid()));
 
-        FileStorage<File> fileStorage = new FileStorageImpl(dir, new ObjectStreamSerializer());
-        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
+        //FileStorageImpl fileStorage = new FileStorageImpl(new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage"), new ObjectStreamSerializer());
+        //fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
 
 
 //        ob.delete(file);
