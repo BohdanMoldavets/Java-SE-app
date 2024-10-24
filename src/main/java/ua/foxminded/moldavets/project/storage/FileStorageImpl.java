@@ -48,7 +48,7 @@ public class FileStorageImpl implements FileStorage<File> {
                 try {
                     serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
                 } catch (IOException exception) {
-                    throw new StorageException("Couldn't save resume " + dir.getAbsolutePath()+"\\"+resume.getUuid(),
+                    throw new StorageException("Couldn't save resume "+ resume.getUuid()+ "to " + dir.getAbsolutePath()+"\\"+resume.getUuid(),
                             dir.getName(), exception);
                 }
             } else {
@@ -61,28 +61,40 @@ public class FileStorageImpl implements FileStorage<File> {
 
     @Override
     public void update(Resume resume, File file) {
-        if (isExist(file)) {
-            try {
-                serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
-            } catch (IOException e) {
-                throw new StorageException("IO exception", file.getName(), e);
+        if (resume != null && file != null) {
+            if (isExist(file)) {
+                try {
+                    serializer.subWrite(resume, new BufferedOutputStream(new FileOutputStream(directory + "\\" + resume.getUuid())));
+                } catch (IOException e) {
+                    throw new StorageException("IO exception", file.getName(), e);
+                }
+            } else {
+                throw new NotExistStorageException(resume.getUuid());
             }
         } else {
-            throw new NotExistStorageException(resume.getUuid());
+            throw new NullPointerException("Resume or search key cannot be null");
         }
     }
 
     @Override
     public void delete(File file) {
-        if(!file.delete()) {
-            throw new StorageException("File delete exception", file.getName());
+        if (file != null) {
+            if(!file.delete()) {
+                throw new StorageException("File delete exception", file.getName());
+            }
+        } else {
+            throw new NullPointerException("File cannot be null");
         }
     }
 
     @Override
     public void clear() {
-        if (directory.listFiles() != null) {
-            Arrays.asList(Objects.requireNonNull(directory.listFiles())).forEach(this::delete);
+        if (getSize() != 0) {
+            if (directory.listFiles() != null) {
+                Arrays.asList(Objects.requireNonNull(directory.listFiles())).forEach(this::delete);
+            }
+        } else {
+            throw new NullPointerException("Storage already empty");
         }
     }
 
@@ -95,21 +107,8 @@ public class FileStorageImpl implements FileStorage<File> {
     public int getSize() {
         String[] files = directory.list();
         if(files == null) {
-            throw new StorageException("Storage null exception", null);
+            throw new StorageException("Storage is empty", null);
         }
         return files.length;
     }
-
-    private boolean checkForInvalidData(Resume resume,File file) {
-        if(resume != null && file != null) {
-            if(!resume.getUuid().trim().isEmpty() && file.getAbsolutePath().trim().isEmpty()) {
-                return true;
-            } else {
-                throw new NullPointerException("Resume or Search Key cannot be empty");
-            }
-        } else {
-            throw new NullPointerException("Resume or Search Key cannot be null");
-        }
-    }
-
 }
