@@ -2,6 +2,7 @@ package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.*;
 import ua.foxminded.moldavets.project.storage.*;
+import ua.foxminded.moldavets.project.storage.serializer.JsonStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.ObjectStreamSerializer;
 
 import java.io.File;
@@ -63,6 +64,12 @@ public class Main {
 
         File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
         String dirStr = dir.getAbsolutePath();
+
+        JsonStreamSerializer js = new JsonStreamSerializer();
+        FileStorage fileStorage = new FileStorageImpl(dir, js);
+        fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
+
+
 //        List<File> list = new ArrayList<>();
 
 //        for(File f : file.listFiles()){
