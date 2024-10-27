@@ -23,6 +23,20 @@ public class Organization implements Serializable {
         this.positions = Arrays.asList(positions);
     }
 
+    public Organization(Link link,Position... positions) {
+        this.homepage = link;
+        this.positions = Arrays.asList(positions);
+    }
+
+
+    public Link getHomePage() {
+        return homepage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     public static class Position implements Serializable {
 
         private final LocalDate startDate;
@@ -64,6 +78,7 @@ public class Organization implements Serializable {
         public String getDescription() {
             return description;
         }
+
 
         @Override
         public String toString() {

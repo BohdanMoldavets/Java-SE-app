@@ -35,6 +35,14 @@ public class Resume implements Serializable {
         return sections.get(type);
     }
 
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
     public void addContact(ContactType type, String value) {
         contacts.put(type, value);
     }

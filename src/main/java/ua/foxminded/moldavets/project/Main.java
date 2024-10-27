@@ -2,6 +2,7 @@ package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.*;
 import ua.foxminded.moldavets.project.storage.*;
+import ua.foxminded.moldavets.project.storage.serializer.DataStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.JsonStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.ObjectStreamSerializer;
 
@@ -59,15 +60,22 @@ public class Main {
                         new Organization.Position(2007, Month.OCTOBER, "position1", "content1"),
                         new Organization.Position(2008, Month.MAY, "position2", "content2"))
         ));
+
+
         resume1.addContact(ContactType.EMAIL,"example@example.com");
 
 
         File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
         String dirStr = dir.getAbsolutePath();
 
-        JsonStreamSerializer js = new JsonStreamSerializer();
-        FileStorage fileStorage = new FileStorageImpl(dir, js);
-        fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
+        JsonStreamSerializer json = new JsonStreamSerializer();
+        DataStreamSerializer ds = new DataStreamSerializer();
+        FileStorage fileStorage = new FileStorageImpl(dir, ds);
+        fileStorage.save(resume1,fileStorage.getSearchKey(resume1.getUuid()));
+        Resume resumetest = fileStorage.get(fileStorage.getSearchKey(resume1.getUuid()));
+        System.out.println(resumetest.getSection(SectionType.EXPERIENCE));
+        //fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
+        //fileStorage.get(resume1.getUuid());
 
 
 //        List<File> list = new ArrayList<>();
