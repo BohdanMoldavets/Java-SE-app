@@ -65,8 +65,9 @@ public class Main {
         resume1.addContact(ContactType.EMAIL,"example@example.com");
 
 
-        File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
-        String dirStr = dir.getAbsolutePath();
+        //File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
+        File dir = Config.get().getStorageDir();
+
 
         JsonStreamSerializer json = new JsonStreamSerializer();
         DataStreamSerializer ds = new DataStreamSerializer();
@@ -74,6 +75,7 @@ public class Main {
         fileStorage.save(resume1,fileStorage.getSearchKey(resume1.getUuid()));
         Resume resumetest = fileStorage.get(fileStorage.getSearchKey(resume1.getUuid()));
         System.out.println(resumetest.getSection(SectionType.EXPERIENCE));
+        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
         //fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
         //fileStorage.get(resume1.getUuid());
 
