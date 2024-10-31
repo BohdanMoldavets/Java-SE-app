@@ -1,19 +1,32 @@
 package ua.foxminded.moldavets.project.storage;
 
+import ua.foxminded.moldavets.project.exception.StorageException;
 import ua.foxminded.moldavets.project.model.Resume;
 
 import java.util.Arrays;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
+    protected Resume[] storage = new Resume[storage_limit];
+
     protected int getIndex (String uuid) {
-        for(int i = 0; i < size; i++) {
-            if(uuid.equals(storage[i].getUuid())) {
-                return i;
+        if(uuid != null) {
+            for(int i = 0; i < size; i++) {
+                if(uuid.equals(storage[i].getUuid())) {
+                    return i;
+                }
             }
+            return -1;
+        } else {
+            throw new NullPointerException("Uuid cannot be null");
         }
-        return -1;
     }
+
+    @Override
+    protected int subGetSize() {
+        return size;
+    }
+
 
     @Override
     protected void subSaveToStorage(Resume resume, int index) {
@@ -21,14 +34,35 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void subDeleteFromStorage(int index) {
+    protected void subDeleteFromStorage(int index, String uuid) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
     }
 
     @Override
-    protected Resume subElementAtIndex(int index) {
+    protected int subGetStorageLimit() {
+        return storage_limit;
+    }
+
+    @Override
+    protected void subClearStorage() {
+        if(!(size <= 0)) {
+            Arrays.fill(storage,0, size, null);
+            size = 0;
+        } else {
+            throw new StorageException("Cannot clear storage, because storage is empty", null);
+        }
+    }
+
+    @Override
+    protected void subSetStorageLimit(int storageLimit) {
+        storage_limit = storageLimit;
+    }
+
+
+    @Override
+    protected Resume subGetElement(int index, String uuid) {
         return storage[index];
     }
 
@@ -36,4 +70,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected Resume[] subStorage() {
         return storage;
     }
+
+
 }
