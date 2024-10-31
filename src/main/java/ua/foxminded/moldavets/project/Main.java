@@ -1,6 +1,7 @@
 package ua.foxminded.moldavets.project;
 
 import ua.foxminded.moldavets.project.model.*;
+import ua.foxminded.moldavets.project.sql.SqlHelper;
 import ua.foxminded.moldavets.project.storage.*;
 import ua.foxminded.moldavets.project.storage.serializer.DataStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.JsonStreamSerializer;
@@ -8,6 +9,7 @@ import ua.foxminded.moldavets.project.storage.serializer.ObjectStreamSerializer;
 
 import java.io.File;
 import java.time.Month;
+import java.util.List;
 
 public class Main {
 
@@ -65,17 +67,27 @@ public class Main {
         resume1.addContact(ContactType.EMAIL,"example@example.com");
 
 
+//        SqlStorage sqlStorage = new SqlStorage(Config.get().getProperties("db.url"),
+//                Config.get().getProperties("db.user"),
+//                Config.get().getProperties("db.password"));
+
+//        sqlStorage.save(resume1);
+//        sqlStorage.save(resume2);
+        //Config.get().getStorage().getAllSorted().forEach(resume -> System.out.println(resume.getContacts()));
+
+
+
         //File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
-        File dir = Config.get().getStorageDir();
-
-
-        JsonStreamSerializer json = new JsonStreamSerializer();
-        DataStreamSerializer ds = new DataStreamSerializer();
-        FileStorage fileStorage = new FileStorageImpl(dir, ds);
-        fileStorage.save(resume1,fileStorage.getSearchKey(resume1.getUuid()));
-        Resume resumetest = fileStorage.get(fileStorage.getSearchKey(resume1.getUuid()));
-        System.out.println(resumetest.getSection(SectionType.EXPERIENCE));
-        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
+//        File dir = Config.get().getStorageDir();
+//
+//
+//        JsonStreamSerializer json = new JsonStreamSerializer();
+//        DataStreamSerializer ds = new DataStreamSerializer();
+//        FileStorage fileStorage = new FileStorageImpl(dir, ds);
+//        fileStorage.save(resume1,fileStorage.getSearchKey(resume1.getUuid()));
+//        Resume resumetest = fileStorage.get(fileStorage.getSearchKey(resume1.getUuid()));
+//        System.out.println(resumetest.getSection(SectionType.EXPERIENCE));
+//        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
         //fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
         //fileStorage.get(resume1.getUuid());
 
