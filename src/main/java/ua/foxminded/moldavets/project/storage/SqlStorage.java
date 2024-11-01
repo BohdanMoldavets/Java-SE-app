@@ -3,6 +3,7 @@ package ua.foxminded.moldavets.project.storage;
 import ua.foxminded.moldavets.project.exception.NotExistStorageException;
 import ua.foxminded.moldavets.project.model.ContactType;
 import ua.foxminded.moldavets.project.model.Resume;
+import ua.foxminded.moldavets.project.model.SectionType;
 import ua.foxminded.moldavets.project.sql.SqlHelper;
 
 import java.sql.*;
@@ -18,6 +19,8 @@ public class SqlStorage implements Storage {
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
+    //"SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE uuid = ?"
+    //SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid LEFT JOIN section s ON r.uuid = s.resume_uuid WHERE uuid = 'uuid1'
     @Override
     public Resume get(String uuid) {
         return sqlHelper.transactionalExecute(connection -> {
