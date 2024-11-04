@@ -6,6 +6,7 @@ import ua.foxminded.moldavets.project.storage.*;
 import ua.foxminded.moldavets.project.storage.serializer.DataStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.JsonStreamSerializer;
 import ua.foxminded.moldavets.project.storage.serializer.ObjectStreamSerializer;
+import ua.foxminded.moldavets.project.util.JsonParser;
 
 import java.io.File;
 import java.time.Month;
@@ -52,16 +53,16 @@ public class Main {
         resume1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
         resume1.addSection(SectionType.QUALIFICATIONS, new ListSection("C,Java,SQL"));
         resume1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement1,Achievement2,Achievement3"));
-        resume1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-                new Organization("Organization", "https://google.com",
-                        new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-                        new Organization.Position(2001, Month.MARCH, "position2", "content2")
-                )));
-        resume1.addSection(SectionType.EDUCATION, new OrganizationSection(
-                new Organization("Merito WSB", "https://merito.pl",
-                        new Organization.Position(2007, Month.OCTOBER, "position1", "content1"),
-                        new Organization.Position(2008, Month.MAY, "position2", "content2"))
-        ));
+//        resume1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+//                new Organization("Organization", "https://google.com",
+//                        new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
+//                        new Organization.Position(2001, Month.MARCH, "position2", "content2")
+//                )));
+//        resume1.addSection(SectionType.EDUCATION, new OrganizationSection(
+//                new Organization("Merito WSB", "https://merito.pl",
+//                        new Organization.Position(2007, Month.OCTOBER, "position1", "content1"),
+//                        new Organization.Position(2008, Month.MAY, "position2", "content2"))
+//        ));
 
 
         resume1.addContact(ContactType.EMAIL,"example@example.com");
@@ -73,9 +74,18 @@ public class Main {
 
 //        sqlStorage.save(resume1);
 //        sqlStorage.save(resume2);
-        //Config.get().getStorage().getAllSorted().forEach(resume -> System.out.println(resume.getContacts()));
+
+        System.out.println(
+                Config.get().getStorage().get("uuid1").getSections()
+        );
+//        Config.get().getStorage().save(resume1);
 
 
+ //       Config.get().getStorage().save(resume1);
+
+//        Section section1 = new TextSection("Bla-bla");
+//        String json = JsonParser.write(section1, Section.class);
+//        System.out.println(json);
 
         //File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
 //        File dir = Config.get().getStorageDir();
