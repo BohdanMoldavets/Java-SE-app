@@ -1,7 +1,5 @@
 package ua.foxminded.moldavets.project.model;
 
-import ua.foxminded.moldavets.project.util.DataUtil;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -17,11 +15,6 @@ public class Organization implements Serializable {
 
     private final Link homepage;
     private List<Position> positions = new ArrayList<>();
-
-    public Organization(String name, String url,Position... positions) {
-        this.homepage = new Link(name, url);
-        this.positions = Arrays.asList(positions);
-    }
 
     public Organization(Link link,Position... positions) {
         this.homepage = link;

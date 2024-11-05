@@ -65,88 +65,12 @@ public class Main {
 //        ));
 
 
-        resume1.addContact(ContactType.EMAIL,"example@example.com");
+        //resume1.addContact(ContactType.EMAIL,"example@example.com");
 
+        //Config.get().getStorage().save(resume1);
+        //System.out.println(Config.get().getStorage().get(resume1.getUuid()).getSections());
+        //Config.get().getStorage().delete("uuid1");
+        System.out.println(Config.get().getStorage().getSize());
 
-//        SqlStorage sqlStorage = new SqlStorage(Config.get().getProperties("db.url"),
-//                Config.get().getProperties("db.user"),
-//                Config.get().getProperties("db.password"));
-
-//        sqlStorage.save(resume1);
-//        sqlStorage.save(resume2);
-
-        System.out.println(
-                Config.get().getStorage().get("uuid1").getSections()
-        );
-//        Config.get().getStorage().save(resume1);
-
-
- //       Config.get().getStorage().save(resume1);
-
-//        Section section1 = new TextSection("Bla-bla");
-//        String json = JsonParser.write(section1, Section.class);
-//        System.out.println(json);
-
-        //File dir = new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage");
-//        File dir = Config.get().getStorageDir();
-//
-//
-//        JsonStreamSerializer json = new JsonStreamSerializer();
-//        DataStreamSerializer ds = new DataStreamSerializer();
-//        FileStorage fileStorage = new FileStorageImpl(dir, ds);
-//        fileStorage.save(resume1,fileStorage.getSearchKey(resume1.getUuid()));
-//        Resume resumetest = fileStorage.get(fileStorage.getSearchKey(resume1.getUuid()));
-//        System.out.println(resumetest.getSection(SectionType.EXPERIENCE));
-//        fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
-        //fileStorage.save(resume1, fileStorage.getSearchKey(resume1.getUuid()));
-        //fileStorage.get(resume1.getUuid());
-
-
-//        List<File> list = new ArrayList<>();
-
-//        for(File f : file.listFiles()){
-//            if(f.isFile()){
-//                list.add(f);
-//                System.out.println(f.getName());
-//            }
-//        }
-
-
-//        ObjectStreamSerializer ob = new ObjectStreamSerializer(dir);
-//        ob.save(resume1,ob.getSearchKey(resume1.getUuid()));
-
-        //FileStorageImpl fileStorage = new FileStorageImpl(new File("C:\\Users\\steam\\IdeaProjects\\Java-SE-app\\storage"), new ObjectStreamSerializer());
-        //fileStorage.delete(fileStorage.getSearchKey(resume1.getUuid()));
-
-
-//        ob.delete(file);
-//        System.out.println(ob.get(file).getSection(SectionType.EXPERIENCE));
-
-//        for(Resume r : LIST_STORAGE.getAllSorted()) {
-//            System.out.println(r);
-//        }
-//
-//        for (SectionType type : SectionType.values()) {
-//            System.out.println(type.getTitle());
-//        }
-
-
-//        System.out.println("--------------List Storage---------------");
-//
-//        Resume[] list = LIST_STORAGE.getAll();
-//        LIST_STORAGE.delete("uuid1");
-//        for (Resume resume : list) {
-//            System.out.println(resume);
-//        }
-//        System.out.println(LIST_STORAGE.get("uuid1"));
-
-//        System.out.println("--------------Map Storage---------------");
-//        Resume[] map = MAP_STORAGE.getAll();
-//
-//
-//        MAP_STORAGE.update(resume1);
-//        for (Resume resume : map) {
-//            System.out.println(resume);
-//        }
     }
 }
