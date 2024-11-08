@@ -130,7 +130,7 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         sqlHelper.transactionalExecute(connection -> {
-            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact")) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM resume")) {
                 preparedStatement.execute();
             }
             return null;

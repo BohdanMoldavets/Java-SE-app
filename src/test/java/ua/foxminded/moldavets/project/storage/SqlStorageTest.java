@@ -1,6 +1,5 @@
 package ua.foxminded.moldavets.project.storage;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -193,20 +192,38 @@ class SqlStorageTest {
         assertEquals("Resume 123 does not exist",exception.getMessage());
     }
 
-    //TODO
     @Test
     void clear_shouldDeleteAllResumesFromStorage_whenStorageNotEmpty() throws Exception {
+        int actual;
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO resume (uuid,full_name) VALUES (?,?)")) {
-            preparedStatement.setString(1, "123");
-            preparedStatement.setString(2, "Test");
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.setString(2, resume.getFullName());
             preparedStatement.execute();
         }
         Config.get().getStorage().clear();
-        Thread.sleep(5000);
-        for (Resume resume : Config.get().getStorage().getAllSorted()) {
-            System.out.println(resume);
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM resume")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            actual = resultSet.getInt(1);
         }
-        //assertEquals(0,Config.get().getStorage().getSize());
+
+        assertEquals(0, actual);
+    }
+
+    @Test
+    void getSize_shouldReturnOne_whenStorageContainsOneResumes() throws Exception {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO resume (uuid,full_name) VALUES (?,?)")) {
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.setString(2, resume.getFullName());
+            preparedStatement.execute();
+        }
+
+        assertEquals(1, Config.get().getStorage().getSize());
+    }
+
+    @Test
+    void getSize_shouldReturnZero_whenStorageIsEmpty() throws Exception {
+        assertEquals(0, Config.get().getStorage().getSize());
     }
 
 }
