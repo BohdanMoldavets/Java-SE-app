@@ -16,7 +16,7 @@ public class ObjectStreamSerializer implements StreamSerializer {
     }
 
     @Override
-    public Resume subRead(InputStream inputStream) throws IOException {
+    public Resume subRead(InputStream inputStream) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             return (Resume) objectInputStream.readObject();
         } catch (Exception e) {

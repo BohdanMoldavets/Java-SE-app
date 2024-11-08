@@ -9,38 +9,38 @@ import java.util.*;
 public class DataStreamSerializer implements StreamSerializer {
     @Override
     public void subWrite(Resume r, OutputStream os) throws IOException {
-        try (DataOutputStream dos = new DataOutputStream(os)) {
-            dos.writeUTF(r.getUuid());
-            dos.writeUTF(r.getFullName());
+        try (DataOutputStream dataOutputStream = new DataOutputStream(os)) {
+            dataOutputStream.writeUTF(r.getUuid());
+            dataOutputStream.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContacts();
-            writeCollection(dos, contacts.entrySet(), entry -> {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
+            writeCollection(dataOutputStream, contacts.entrySet(), entry -> {
+                dataOutputStream.writeUTF(entry.getKey().name());
+                dataOutputStream.writeUTF(entry.getValue());
             });
 
-            writeCollection(dos, r.getSections().entrySet(), entry -> {
+            writeCollection(dataOutputStream, r.getSections().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
-                dos.writeUTF(type.name());
+                dataOutputStream.writeUTF(type.name());
                 switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        dos.writeUTF(((TextSection) section).getContent());
+                        dataOutputStream.writeUTF(((TextSection) section).getContent());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeCollection(dos, ((ListSection) section).getItems(), dos::writeUTF);
+                        writeCollection(dataOutputStream, ((ListSection) section).getItems(), dataOutputStream::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        writeCollection(dos, ((OrganizationSection) section).getOrganizations(), org -> {
-                            dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getUrl());
-                            writeCollection(dos, org.getPositions(), position -> {
-                                writeLocalDate(dos, position.getStartDate());
-                                writeLocalDate(dos, position.getEndDate());
-                                dos.writeUTF(position.getTitle());
-                                dos.writeUTF(position.getDescription());
+                        writeCollection(dataOutputStream, ((OrganizationSection) section).getOrganizations(), org -> {
+                            dataOutputStream.writeUTF(org.getHomePage().getName());
+                            dataOutputStream.writeUTF(org.getHomePage().getUrl());
+                            writeCollection(dataOutputStream, org.getPositions(), position -> {
+                                writeLocalDate(dataOutputStream, position.getStartDate());
+                                writeLocalDate(dataOutputStream, position.getEndDate());
+                                dataOutputStream.writeUTF(position.getTitle());
+                                dataOutputStream.writeUTF(position.getDescription());
                             });
                         });
                         break;
